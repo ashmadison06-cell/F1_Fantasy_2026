@@ -91,8 +91,11 @@ captainBtn.addEventListener("click", (e) => {
 });
 
 function updateUI() {
+    // Update budget display
     budgetDisplay.textContent = `Budget: $${remainingBudget}M`;
-    finishBtn.disabled = selectedDrivers.length !== 5;
+
+    // Enable finish button ONLY if 5 drivers AND a captain are selected
+    finishBtn.disabled = !(selectedDrivers.length === 5 && currentCaptainDriver);
 }
 
 function chooseCaptain(driver, cardElement) {
@@ -125,4 +128,18 @@ function chooseCaptain(driver, cardElement) {
 
     updateUI();
 }
+finishBtn.addEventListener("click", () => {
+    const finalTeam = [currentCaptainDriver, ...selectedDrivers.filter(d => d !== currentCaptainDriver)];
+
+    resultDiv.classList.remove("hidden");
+    resultDiv.innerHTML = `
+        <h2>🏁 FINAL TEAM 🏁</h2>
+        ${finalTeam.map(d =>
+            `<p>${d.name}${d === currentCaptainDriver ? " (Captain)" : ""}</p>`
+        ).join("")}
+        <p>Budget Remaining: $${remainingBudget}M</p>
+    `;
+
+    finishBtn.disabled = true;
+});
 
