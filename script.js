@@ -51,26 +51,41 @@ captainBtn.addEventListener("click", (e) => {
 });
     
     card.addEventListener("click", () => {
-        if (selectedDrivers.includes(driver)) {
-            selectedDrivers = selectedDrivers.filter(d => d !== driver);
-            remainingBudget += driver.cost;
-            card.classList.remove("selected");
-        } else {
-            if (selectedDrivers.length >= 5) {
-                alert("You can only select 5 drivers.");
-                return;
-            }
-            if (driver.cost > remainingBudget) {
-                alert("Not enough budget!");
-                return;
-            }
-            selectedDrivers.push(driver);
-            remainingBudget -= driver.cost;
-            card.classList.add("selected");
+
+    if (selectedDrivers.includes(driver)) {
+
+        // If this driver is captain, refund captain bonus
+        if (currentCaptain === card) {
+            remainingBudget += captainExtraCost;
+            captainExtraCost = 0;
+            currentCaptain.classList.remove("captain");
+            currentCaptain = null;
         }
 
-        updateUI();
-    });
+        // Refund base driver cost
+        selectedDrivers = selectedDrivers.filter(d => d !== driver);
+        remainingBudget += driver.cost;
+        card.classList.remove("selected");
+
+    } else {
+
+        if (selectedDrivers.length >= 5) {
+            alert("You can only select 5 drivers.");
+            return;
+        }
+
+        if (driver.cost > remainingBudget) {
+            alert("Not enough budget!");
+            return;
+        }
+
+        selectedDrivers.push(driver);
+        remainingBudget -= driver.cost;
+        card.classList.add("selected");
+    }
+
+    updateUI();
+});
 
     driverContainer.appendChild(card);
 });
