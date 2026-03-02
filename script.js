@@ -2,6 +2,8 @@
 const BUDGET = 100;
 let remainingBudget = BUDGET;
 let selectedDrivers = [];
+let currentCaptain = null;
+let captainExtraCost = 0;
 
 const drivers = [
     { name: "Max Verstappen", cost: 37, points: 510 },
@@ -33,8 +35,9 @@ const budgetDisplay = document.getElementById("budget");
 const finishBtn = document.getElementById("finishBtn");
 const resultDiv = document.getElementById("result");
 
+
 drivers.forEach(driver => {
-    const card = document.createElement("div");
+	const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `<h3>${driver.name}</h3>
                       <p>Cost: $${driver.cost}M</p>
@@ -42,7 +45,10 @@ drivers.forEach(driver => {
                       <button class="captain-btn">Make Captain</button>
                     `;
 const captainBtn = card.querySelector(".captain-btn");
-captainBtn.addEventListener("click", () => chooseCaptain(driver));
+captainBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents selecting/unselecting card
+    chooseCaptain(driver, card);
+});
     
     card.addEventListener("click", () => {
         if (selectedDrivers.includes(driver)) {
@@ -74,32 +80,34 @@ function updateUI() {
     finishBtn.disabled = selectedDrivers.length !== 5;
 }
 
-function chooseCaptain(driver) {
-    const captain = driver; // set the chosen driver
-    //  calculate captain cost and see if budget is enough
-    const captainCost = Math.ceil(driver.cost * 0.25);
-    if (captainCost > remainingBudget) {
+function chooseCaptain(driver, cardElement) {
+
+    if (!selectedDrivers.includes(driver)) {
+        alert("You must select this driver first!");
+        return;
+    }
+
+    const newCaptainCost = Math.ceil(driver.cost * 0.25);
+
+    // Refund previous captain cost if exists
+    if (currentCaptain) {
+        remainingBudget += captainExtraCost;
+        currentCaptain.classList.remove("captain");
+    }
+
+    // Check budget after refund
+    if (newCaptainCost > remainingBudget) {
         alert("Not enough budget to make this driver captain!");
         return;
     }
-    remainingBudget -= captainCost;
-    budgetDisplay.textContent = `Budget: $${remainingBudget}M`;
-    
-    //Highlight captain card    
-    document.querySelectorAll(".card").forEach(c => c.classList.remove("captain"));
-    card.classList.add("captain");
-    
-    // Show final team
-    const finalTeam = [captain, ...selectedDrivers.filter(d => d !== captain)];
-    resultDiv.classList.remove("hidden");
-    resultDiv.innerHTML = `
-        <h2>🏁 FINAL TEAM 🏁</h2>
-        ${finalTeam.map(d =>
-            `<p>${d.name}${d === captain ? " (Captain)" : ""}</p>`
-        ).join("")}  
-        <p>Budget Remaining: $${remainingBudget}M</p>
-    `;
 
-    finishBtn.disabled = true;
+    // Deduct new captain cost
+    remainingBudget -= newCaptainCost;
+    captainExtraCost = newCaptainCost;
+
+    currentCaptain = cardElement;
+    currentCaptain.classList.add("captain");
+
+    updateUI();
 }
 
