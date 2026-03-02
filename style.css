@@ -35,8 +35,9 @@ h1 {
     transform: scale(1.05);
 }
 
-.captain {
-    border: 2px solid #c3e100;
+.card.captain {
+    border: 2px solid #c3e100 !important;
+    box-shadow: 0 0 15px #c3e100;
 }
 
 .card.selected {
