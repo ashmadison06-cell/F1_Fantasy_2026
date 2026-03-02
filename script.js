@@ -103,27 +103,3 @@ function chooseCaptain(driver) {
     finishBtn.disabled = true;
 }
 
-    
- 
-    let totalPoints = 0;
-    selectedDrivers.forEach(d => {
-        totalPoints += d === captain ? d.points * 2 : d.points;
-    });
-
-    resultDiv.classList.remove("hidden");
-    
-    const finalTeam = [
-    captain, // always first
-    ...selectedDrivers.filter(d => d !== captain) // the rest
-    ];
-    
-    resultDiv.innerHTML = `
-        <h2>🏁 FINAL TEAM 🏁</h2>
-        ${finalTeam.map(d =>
-            `<p>${d.name}${d === captain ? " (Captain)" : ""}</p>`
-        ).join("")}  
-        <p>Budget Remaining: $${remainingBudget}M</p>
-    `;
-
-    finishBtn.disabled = true;
-
