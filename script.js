@@ -104,10 +104,7 @@ function chooseCaptain(driver) {
 }
 
     
-
-    
-
-    
+ 
     let totalPoints = 0;
     selectedDrivers.forEach(d => {
         totalPoints += d === captain ? d.points * 2 : d.points;
@@ -129,4 +126,4 @@ function chooseCaptain(driver) {
     `;
 
     finishBtn.disabled = true;
-}
+
