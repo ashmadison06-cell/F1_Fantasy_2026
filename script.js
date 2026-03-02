@@ -1,4 +1,4 @@
-alert("JS is connected!");
+//alert("JS is connected!");
 const BUDGET = 100;
 let remainingBudget = BUDGET;
 let selectedDrivers = [];
@@ -75,15 +75,20 @@ function updateUI() {
 }
 
 function chooseCaptain(driver) {
-    captain = driver; // set the chosen driver
-    // Optionally calculate captain cost
+    const captain = driver; // set the chosen driver
+    //  calculate captain cost and see if budget is enough
     const captainCost = Math.ceil(driver.cost * 0.25);
-    
+    if (captainCost > remainingBudget) {
+        alert("Not enough budget to make this driver captain!");
+        return;
+    }
     remainingBudget -= captainCost;
-    budgetLabel.textContent = `Budget: $${remainingBudget}M`;
+    budgetDisplay.textContent = `Budget: $${remainingBudget}M`;
+    
     //Highlight captain card    
     document.querySelectorAll(".card").forEach(c => c.classList.remove("captain"));
     card.classList.add("captain");
+    
     // Show final team
     const finalTeam = [captain, ...selectedDrivers.filter(d => d !== captain)];
     resultDiv.classList.remove("hidden");
@@ -98,15 +103,11 @@ function chooseCaptain(driver) {
     finishBtn.disabled = true;
 }
 
-    const captainCost = Math.ceil(captain.cost * 0.25);
+    
 
-    if (captainCost > remainingBudget) {
-        alert("Not enough budget to make this driver captain!");
-        return;
-    }
+    
 
-    remainingBudget -= captainCost;
-
+    
     let totalPoints = 0;
     selectedDrivers.forEach(d => {
         totalPoints += d === captain ? d.points * 2 : d.points;
