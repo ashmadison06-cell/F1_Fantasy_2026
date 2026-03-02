@@ -38,7 +38,7 @@ drivers.forEach(driver => {
     card.classList.add("card");
     card.innerHTML = `<h3>${driver.name}</h3>
                       <p>Cost: $${driver.cost}M</p>
-                      <p>Points: ${driver.points}</p>`;
+                      <p>Captain Cost: ${Math.ceil(driver.cost * 0.25)}M</p>`;
 
     card.addEventListener("click", () => {
         if (selectedDrivers.includes(driver)) {
