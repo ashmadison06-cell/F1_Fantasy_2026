@@ -35,6 +35,10 @@ h1 {
     transform: scale(1.05);
 }
 
+.captain {
+    border: 2px solid red;
+}
+
 .card.selected {
     border: 2px solid #e10600;
 }
