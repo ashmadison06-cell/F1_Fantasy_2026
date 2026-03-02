@@ -1,4 +1,7 @@
-//alert("JS is connected!"); 
+alert("Make your 5 driver choices!"); 
+alert("Pick one caprain for 2X points but an extra 25% cost");
+alert("sebd a picture of your finished team to the snapchat group");
+
 const BUDGET = 100;
 let remainingBudget = BUDGET;
 let selectedDrivers = [];
