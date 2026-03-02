@@ -1,4 +1,4 @@
-alert("Make your 5 driver choices! /nPick one caprain for 2X points but an extra 25% cost /nsend a picture of your finished team to the snapchat group");
+alert("Make your 5 driver choices! Pick one caprain for 2X points, but an extra 25% cost. Send a picture of your finished team to the snapchat group.");
 
 const BUDGET = 100;
 let remainingBudget = BUDGET;
