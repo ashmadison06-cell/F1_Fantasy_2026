@@ -129,4 +129,4 @@ function chooseCaptain(driver) {
     `;
 
     finishBtn.disabled = true;
-});
+}
