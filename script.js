@@ -95,10 +95,16 @@ finishBtn.addEventListener("click", () => {
     });
 
     resultDiv.classList.remove("hidden");
+    
+    const finalTeam = [
+    captain, // always first
+    ...selectedDrivers.filter(d => d !== captain) // the rest
+    ];
+    
     resultDiv.innerHTML = `
         <h2>🏁 FINAL TEAM 🏁</h2>
-        ${selectedDrivers.map(d =>
-            `<p>${d.name}${d === captain ? " (Captain)" : ""} - Captain Cost: $${Math.ceil(d.cost * 0.25)}M</p>`
+        ${finalTeam.map(d =>
+            `<p>${d.name}${d === captain ? " (Captain)" : ""}</p>`
         ).join("")}  
         <p>Budget Remaining: $${remainingBudget}M</p>
     `;
