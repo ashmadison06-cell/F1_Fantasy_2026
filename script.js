@@ -4,6 +4,7 @@ let remainingBudget = BUDGET;
 let selectedDrivers = [];
 let currentCaptain = null;
 let captainExtraCost = 0;
+let currentCaptainDriver = null;
 
 const drivers = [
     { name: "Max Verstappen", cost: 37, points: 510 },
@@ -93,13 +94,13 @@ captainBtn.addEventListener("click", (e) => {
 function updateUI() {
     // Update budget display
     budgetDisplay.textContent = `Budget: $${remainingBudget}M`;
-
+	
     // Enable finish button ONLY if 5 drivers AND a captain are selected
     finishBtn.disabled = !(selectedDrivers.length === 5 && currentCaptainDriver);
 }
 
 function chooseCaptain(driver, cardElement) {
-
+	
     if (!selectedDrivers.includes(driver)) {
         alert("You must select this driver first!");
         return;
@@ -110,7 +111,10 @@ function chooseCaptain(driver, cardElement) {
     // Refund previous captain cost if exists
     if (currentCaptain) {
         remainingBudget += captainExtraCost;
+		captainExtraCost = 0;
         currentCaptain.classList.remove("captain");
+		currentCaptain = null;
+    	currentCaptainDriver = null;
     }
 
     // Check budget after refund
@@ -122,7 +126,7 @@ function chooseCaptain(driver, cardElement) {
     // Deduct new captain cost
     remainingBudget -= newCaptainCost;
     captainExtraCost = newCaptainCost;
-
+	currentCaptainDriver = driver;
     currentCaptain = cardElement;
     currentCaptain.classList.add("captain");
 
