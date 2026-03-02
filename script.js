@@ -1,4 +1,4 @@
-//alert("JS is connected!");
+//alert("JS is connected!"); 
 const BUDGET = 100;
 let remainingBudget = BUDGET;
 let selectedDrivers = [];
