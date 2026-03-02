@@ -1,4 +1,4 @@
-alert("JS is connected!");
+//alert("JS is connected!");
 const BUDGET = 100;
 let remainingBudget = BUDGET;
 let selectedDrivers = [];
@@ -38,8 +38,12 @@ drivers.forEach(driver => {
     card.classList.add("card");
     card.innerHTML = `<h3>${driver.name}</h3>
                       <p>Cost: $${driver.cost}M</p>
-                      <p>Captain Cost: ${Math.ceil(driver.cost * 0.25)}M</p>`;
-
+                      <p>Captain Cost: ${Math.ceil(driver.cost * 0.25)}M</p>
+                      <button class="captain-btn">Make Captain</button>
+                    `;
+const captainBtn = card.querySelector(".captain-btn");
+captainBtn.addEventListener("click", () => chooseCaptain(driver));
+    
     card.addEventListener("click", () => {
         if (selectedDrivers.includes(driver)) {
             selectedDrivers = selectedDrivers.filter(d => d !== driver);
@@ -70,15 +74,29 @@ function updateUI() {
     finishBtn.disabled = selectedDrivers.length !== 5;
 }
 
-finishBtn.addEventListener("click", () => {
-    const captainName = prompt("Type the name of your captain (must match exactly):");
+function chooseCaptain(driver) {
+    captain = driver; // set the chosen driver
+    // Optionally calculate captain cost
+    const captainCost = Math.ceil(driver.cost * 0.25);
+    
+    remainingBudget -= captainCost;
+    budgetLabel.textContent = `Budget: $${remainingBudget}M`;
+    //Highlight captain card    
+    document.querySelectorAll(".card").forEach(c => c.classList.remove("captain"));
+    card.classList.add("captain");
+    // Show final team
+    const finalTeam = [captain, ...selectedDrivers.filter(d => d !== captain)];
+    resultDiv.classList.remove("hidden");
+    resultDiv.innerHTML = `
+        <h2>🏁 FINAL TEAM 🏁</h2>
+        ${finalTeam.map(d =>
+            `<p>${d.name}${d === captain ? " (Captain)" : ""}</p>`
+        ).join("")}  
+        <p>Budget Remaining: $${remainingBudget}M</p>
+    `;
 
-    const captain = selectedDrivers.find(d => d.name === captainName);
-
-    if (!captain) {
-        alert("Invalid captain.");
-        return;
-    }
+    finishBtn.disabled = true;
+}
 
     const captainCost = Math.ceil(captain.cost * 0.25);
 
